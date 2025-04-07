@@ -19,18 +19,25 @@ public class ValidateBST {
         boolean isValid = true;
 
     public boolean isValidBST(TreeNode root) {
-        helper(root);
-        return isValid;
+        //return helper(root);
+        return helperApproach2(root,null, null);
     }
 
-    private void helper(TreeNode root) {
-        if(root == null) return;
-        helper(root.left);
-        if(prev!=null && prev.val > root.val) {
-            isValid = false;
+    private boolean helper(TreeNode root) {
+        if(root == null) return true;
+        if(helper(root.left) == false) return false;
+        if(prev!=null && prev.val >= root.val) {
+            return false;
         }
         prev = root;
-        helper(root.right);
+        return helper(root.right);
+    }
+
+    private boolean helperApproach2(TreeNode root, Integer min, Integer max) {
+        if(root == null) return true;
+        if(max != null && root.val >= max) return false;
+        if(min != null && root.val <= min) return false;
+        return helperApproach2(root.left, min, root.val) && helperApproach2(root.right, root.val, max);
     }
 
 }
